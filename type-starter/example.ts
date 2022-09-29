@@ -102,6 +102,12 @@ function cris(people: People) {
 }
 console.log();
 
+//classes can also extend interfaces?
+interface peopleInterface {
+  a: string;
+  b: string;
+}
+
 /**
  * * Generics
  */
