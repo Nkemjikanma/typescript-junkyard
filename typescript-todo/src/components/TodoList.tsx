@@ -8,7 +8,7 @@ interface Props {
 
 const TodoList = ({ todos, setTodos }: Props) => {
   return (
-    <section className=" border-1 border-black w-[80%] h-full">
+    <section className="border border-1 border-black w-[80%] h-full">
       <div className="todos">
         {todos.length === 0
           ? ""

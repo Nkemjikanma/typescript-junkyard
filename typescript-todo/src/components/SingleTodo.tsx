@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { edit, bin, done } from "../assets";
+import { editBtn, bin, done } from "../assets";
 import { Todo } from "../constants/model";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 }
 
-function SingleTodo({ index, todo, todos, setTodos }: Props) {
+export default function SingleTodo({ index, todo, todos, setTodos }: Props) {
   const [edit, setEdit] = useState<boolean>(false);
   const [editTodo, setEditTodo] = useState<string>(todo.todo);
 
@@ -18,33 +18,67 @@ function SingleTodo({ index, todo, todos, setTodos }: Props) {
      * * idx === 2 => done was clicked
      * * idx === 1 => delete was clicked
      */
+    // Done
     if (idx === 2) {
       console.log(`You clicked done `);
       setTodos(
         todos.map((prevTodo) => {
           return prevTodo.id === id
             ? { ...prevTodo, isDone: !todo.isDone }
-            : todo;
+            : prevTodo;
         })
       );
     }
+    // Delete
     if (idx === 1) {
       // loop through the todos, and setTodos to every todo except the todo with the id
       setTodos((previousTodos) => {
         return previousTodos.filter((prevTodo) => prevTodo.id !== id);
       });
     }
+
+    // edit the text of existing todo
+    if (idx === 0) {
+      console.log(edit);
+      if (!todo.isDone) {
+        setEdit((prevEdit) => !prevEdit);
+      }
+    }
   }
-  const icons = [edit, bin, done];
+
+  function handleEditButton(e: React.FormEvent, id: number) {
+    e.preventDefault();
+
+    setTodos((previousTodos) => {
+      return previousTodos.map((prevTodo) =>
+        prevTodo.id == id ? { ...prevTodo, todo: editTodo } : prevTodo
+      );
+    });
+    setEdit(false);
+  }
+
+  const icons = [editBtn, bin, done];
   return (
-    <form className="bg-todo-list mt-7 h-[50px] py-6 px-3 bg-slate-300 shadow-inner flex flex-row items-center justify-between rounded-md">
-      {todo.isDone ? (
-        <h3 className="text-2xl font-thin line-through text-slate-500">
-          {todo.todo}
-        </h3>
-      ) : (
-        <h3 className="text-2xl font-thin">{todo.todo}</h3>
-      )}
+    <form
+      className="bg-todo-list mt-7 h-[50px] py-6 px-3 bg-slate-300 shadow-inner flex flex-row items-center justify-between rounded-md"
+      onSubmit={(event) => handleEditButton(event, todo.id)}
+    >
+      {
+        // Conditionally rendering the input field is edit is true
+        edit ? (
+          <input
+            value={editTodo}
+            onChange={(e) => setEditTodo(e.target.value)}
+            className="todo_text_field w-[70%] h-9 border-none shadow-md rounded-md overflow-clip placeholder:ml-5 focus:outline-none focus:border-slate-600 focus:ring-slate-600 focus:ring-2 pl-[10px] transition"
+          />
+        ) : todo.isDone ? (
+          <h3 className="text-2xl font-thin line-through text-slate-500">
+            {todo.todo}
+          </h3>
+        ) : (
+          <h3 className="text-2xl font-thin">{todo.todo}</h3>
+        )
+      }
 
       <div className="flex flex-row gap-2">
         {icons.map((icon, index) => {
@@ -52,7 +86,7 @@ function SingleTodo({ index, todo, todos, setTodos }: Props) {
             <img
               key={index}
               src={icon}
-              alt={index.toString()}
+              alt="buttons"
               className="h-7 rounded-sm hover:scale-[1.1] transition-all hover:rotate-[360deg] cursor-pointer"
               onClick={() => handleAction(index, todo.id)}
             />
@@ -62,5 +96,3 @@ function SingleTodo({ index, todo, todos, setTodos }: Props) {
     </form>
   );
 }
-
-export default SingleTodo;

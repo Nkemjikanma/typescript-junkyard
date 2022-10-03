@@ -9,18 +9,17 @@ interface Props {
 export default function InputField({ todo, setTodo, addToTodos }: Props) {
   //console.log(todo);
 
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  //const inputRef = React.useRef<HTMLInputElement>(null);
 
   return (
     <form
       className="container w-[500px]  border-1 border-black flex flex-row bg-none relative items-center overflow-clip p-5"
       onSubmit={(e) => {
         addToTodos(e);
-        inputRef.current?.blur();
+        //inputRef.current?.blur();
       }}
     >
       <input
-        ref={inputRef}
         type="text"
         placeholder="Enter Todo"
         name="todo"
