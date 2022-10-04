@@ -13,7 +13,7 @@ export default function InputField({ todo, setTodo, addToTodos }: Props) {
 
   return (
     <form
-      className="container w-[500px]  border-1 border-black flex flex-row bg-none relative items-center overflow-clip p-5"
+      className="container w-[500px] border-1 border-black flex flex-row bg-none relative items-center overflow-clip p-5"
       onSubmit={(e) => {
         addToTodos(e);
         //inputRef.current?.blur();

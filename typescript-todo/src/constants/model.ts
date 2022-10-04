@@ -7,7 +7,7 @@ export interface Todo {
 //it takes state and actions
 // state is the array of todos
 
-type Actions =
+/*type Actions =
   | { type: "add"; payload: string }
   | { type: "remove"; payload: number }
   | { type: "done"; payload: number };
@@ -19,7 +19,7 @@ const TodoReducer = (state: Todo[], action: Actions) => {
     case "remove":
       return state.filter((todo) => todo.id !== action.payload);
     case "done":
-      return state.map((todo) => todo.id !== action.payload ? {...todo, isDone:!todo.isDone});
+      return state.map((todo) => todo.id !== action.payload ? {...todo, isDone:!todo.isDone}) ;
     default:
       return state;
   }
@@ -36,3 +36,4 @@ const model = (props: Props) => {
 };
 
 export default model;
+*/

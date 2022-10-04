@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Draggable } from "react-beautiful-dnd";
 import { editBtn, bin, done } from "../assets";
 import { Todo } from "../constants/model";
 
@@ -59,40 +60,49 @@ export default function SingleTodo({ index, todo, todos, setTodos }: Props) {
 
   const icons = [editBtn, bin, done];
   return (
-    <form
-      className="bg-todo-list mt-7 h-[50px] py-6 px-3 bg-slate-300 shadow-inner flex flex-row items-center justify-between rounded-md"
-      onSubmit={(event) => handleEditButton(event, todo.id)}
-    >
-      {
-        // Conditionally rendering the input field is edit is true
-        edit ? (
-          <input
-            value={editTodo}
-            onChange={(e) => setEditTodo(e.target.value)}
-            className="todo_text_field w-[70%] h-9 border-none shadow-md rounded-md overflow-clip placeholder:ml-5 focus:outline-none focus:border-slate-600 focus:ring-slate-600 focus:ring-2 pl-[10px] transition"
-          />
-        ) : todo.isDone ? (
-          <h3 className="text-2xl font-thin line-through text-slate-500">
-            {todo.todo}
-          </h3>
-        ) : (
-          <h3 className="text-2xl font-thin">{todo.todo}</h3>
-        )
-      }
+    <Draggable draggableId={todo.id.toString()} index={index}>
+      {(provided, snapshot) => (
+        <form
+          className={`border-1 border-red-400 bg-todo-list mt-7 h-[50px] py-6 px-3 bg-slate-100 shadow-inner flex flex-row items-center justify-between rounded-md transition-all hover:shadow-xl hover:scale-105 ${
+            snapshot.isDragging ? "shadow:xl bg-slate-500" : ""
+          }`}
+          onSubmit={(event) => handleEditButton(event, todo.id)}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+        >
+          {
+            // Conditionally rendering the input field is edit is true
+            edit ? (
+              <input
+                value={editTodo}
+                onChange={(e) => setEditTodo(e.target.value)}
+                className="todo_text_field w-[60%] h-7 rounded-md overflow-clip placeholder:ml-5 focus:outline-none focus:border-slate-600 focus:ring-slate-600 focus:ring-2 pl-[10px] transition"
+              />
+            ) : todo.isDone ? (
+              <h3 className=" font-thin line-through text-slate-500">
+                {todo.todo}
+              </h3>
+            ) : (
+              <h3 className="font-thin">{todo.todo}</h3>
+            )
+          }
 
-      <div className="flex flex-row gap-2">
-        {icons.map((icon, index) => {
-          return (
-            <img
-              key={index}
-              src={icon}
-              alt="buttons"
-              className="h-7 rounded-sm hover:scale-[1.1] transition-all hover:rotate-[360deg] cursor-pointer"
-              onClick={() => handleAction(index, todo.id)}
-            />
-          );
-        })}
-      </div>
-    </form>
+          <div className="flex flex-row gap-2">
+            {icons.map((icon, index) => {
+              return (
+                <img
+                  key={index}
+                  src={icon}
+                  alt="buttons"
+                  className="h-5 w-5 outline-none rounded-sm hover:scale-[1.1] transition-all hover:rotate-[360deg] cursor-pointer"
+                  onClick={() => handleAction(index, todo.id)}
+                />
+              );
+            })}
+          </div>
+        </form>
+      )}
+    </Draggable>
   );
 }
