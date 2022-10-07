@@ -47,14 +47,6 @@ const App: React.FC = () => {
     if (source.droppableId === "TodosList") {
       add = active[source.index];
       active.splice(source.index, 1);
-
-      setTodos(
-        todos.map((prevTodo) => {
-          return prevTodo.id === source.index
-            ? { ...prevTodo, isDone: !prevTodo.isDone }
-            : prevTodo;
-        })
-      );
     } else {
       add = complete[source.index];
       complete.splice(source.index, 1);
@@ -73,6 +65,13 @@ const App: React.FC = () => {
     setTodos(active);
   };
 
+  /**
+   * TODO: Mark todo as done when dragged to completed tab
+   */
+
+  //TODO: Mark todo as done when dragged to completed tab
+  //BUG:
+  //FIXME:
   //console.log(todos);
   return (
     <DragDropContext onDragEnd={onDragEnd}>
