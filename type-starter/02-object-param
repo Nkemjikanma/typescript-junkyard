@@ -1,0 +1,8 @@
+interface Params {
+  first: number;
+  second: number;
+}
+const addTwoNumbersAgain = (params: Params) => {
+  return params.first + params.second;
+};
+console.log(addTwoNumbersAgain({ first: 1, second: 2 }));
